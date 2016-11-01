@@ -78,6 +78,27 @@ class Operation(object):
             return values[0] and values[1]
         if self.operator == Operators.OR:
             return values[0] or values[1]
+
+    def truth_set(self, variables):
+        vcount = len(variables)
+        vrange = range(0, vcount)
+        mx = pow(2, vcount)
+        st = set()
+        dvars = {}
+
+        for i in range(0, mx):
+            for j in vrange:
+                value = (i >> (vcount - j - 1)) & 1
+                dvars[variables[j]] = value
+            if self.eval(dvars) == True:
+                truthe = ""
+                for j in vrange:
+                    if dvars[variables[j]] == 1:
+                        truthe += '1'
+                    else:
+                        truthe += '0'
+                st.add(truthe)
+        return st
     
     def polish_notation(self, beautify = False):
         s = ""
