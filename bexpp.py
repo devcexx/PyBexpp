@@ -12,7 +12,7 @@ class ParseError(Exception):
     pass
 
 class Operators(Enum):
-    NONE = (0, 0)
+    NONE = (0, 1)
     NOT = (1, 1)
     XOR = (2, 2)
     AND = (3, 2)
@@ -133,28 +133,33 @@ class Operation(object):
             s += " )"
         return s
         
+    def __str_operand(self, operand):
+        s = ""
+        if isinstance(operand, basestring):
+            s += operand
+        else:
+            bracketsRequired = operand.operator > self.operator
+            if bracketsRequired:
+                s += "("
+            s += operand.common_notation()
+            if bracketsRequired:
+                s += ")"
+        return s
+
     def common_notation(self):
         s = ""
-        placeOperator = True
-        lastWasVar = False
-        for operand in self.operands:
-            if isinstance(operand, basestring):
-                s += operand
-                lastWasVar = True
-            else:
-                s += operand.common_notation()
-                lastWasVar = operand.operator == Operators.NOT
-            if placeOperator:
-                if self.operator == Operators.NOT:
-                    s += '\''
-                elif self.operator == Operators.XOR:
-                    s += '^'
-                elif self.operator == Operators.AND and not lastWasVar:
-                    s += '*'
-                elif self.operator == Operators.OR:
-                    s += '+'
-                placeOperator = False
-        return s
+        s += self.__str_operand(self.operands[0])
+        if self.operator == Operators.NOT:
+            s += '\''
+        elif self.operator == Operators.XOR:
+            s += '^'
+        elif self.operator == Operators.AND:
+            s += '*'
+        elif self.operator == Operators.OR:
+            s += '+'
+        if self.operator.operc > 1:
+            s += self.__str_operand(self.operands[1])
+        return s;
             
 def is_valid_var_name(ch):
     if len(ch) != 1:
