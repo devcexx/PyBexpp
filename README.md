@@ -18,36 +18,9 @@ The purpose of this library is to parse boolean expressions and then, work with 
  - Variables: a case sensitive character between `A-Z` and `a-z`, that can take different boolean values.
  - Operators: a symbol that represents an operation done between one or more operands. The allowed operators are, from most to less precedence:
    - `'` NOT [Unary]: negates the value of an operand. This operator is placed at the right of the operand. Example: `a'`, `(a+b)'`.
-     ```
-     a | S
-     0 | 1
-     1 | 0
-     ```
    - `^` Or Exclusive (XOr) [Binary]: Returns `1` only if one of the operators has the value `1`. Otherwise `0` is returned.
-     ```
-     a b | S
-     0 0 | 0
-     0 1 | 1
-     1 0 | 1
-     1 1 | 0
-     ```
    - `*` And [Binary]: Returns `1` only if both operators are `1`. Otherwise `0` is returned.
-     ```
-     a b | S
-     0 0 | 0
-     0 1 | 0
-     1 0 | 0
-     1 1 | 1
-     ```
    - `+` Or [Binary]: Returns `0` if both operators are `0`. Otherwise, it returns `1`. It can be omitted between variables or constants. So, the expression `ab` is equivalent to `a*b`; `10` is equivalent to `1*0` and `a1` is equivalent to `a*1`. But `(a + b)(a + c)` is an invalid expression.
-     ```
-     a b | S
-     0 0 | 0
-     0 1 | 1
-     1 0 | 1
-     1 1 | 1
-     ```
-
 ##### Examples of valid expressions.
   - `ab+ac'`
   - `(a + b) * (a + cd)'`
@@ -56,7 +29,7 @@ The purpose of this library is to parse boolean expressions and then, work with 
   - `a ^ bc`
   - `abcd + a'bc'd + abcd' + abc'd' + a'b'cd`
 
-#### Working with expressions
+##### Working with expressions
 First of all, you have to run a Python console. Open a Python terminal in the directory of PyBexpp. Once this is done, you have to import the functions from the file:
 ```
 >>> from bexpp import *
