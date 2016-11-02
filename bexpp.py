@@ -81,7 +81,7 @@ class Operation(object):
                         val = True
                     if not isinstance(val, bool):
                         raise TypeError("Expected boolean value for variable %c" % operand)
-                    values.append(val)
+                values.append(val)
             else:
                 values.append(operand.eval(variables))
                 
