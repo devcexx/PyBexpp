@@ -21,6 +21,7 @@ The purpose of this library is to parse boolean expressions and then, work with 
    - `^` Or Exclusive (XOr) [Binary]: Returns `1` only if one of the operators has the value `1`. Otherwise `0` is returned.
    - `*` And [Binary]: Returns `1` only if both operators are `1`. Otherwise `0` is returned.
    - `+` Or [Binary]: Returns `0` if both operators are `0`. Otherwise, it returns `1`. It can be omitted between variables or constants. So, the expression `ab` is equivalent to `a*b`; `10` is equivalent to `1*0` and `a1` is equivalent to `a*1`. But `(a + b)(a + c)` is an invalid expression.
+
 ##### Examples of valid expressions.
   - `ab+ac'`
   - `(a + b) * (a + cd)'`
