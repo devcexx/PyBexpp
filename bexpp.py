@@ -248,13 +248,13 @@ def parse_expr(buf, off = 0, length = -1):
     
     while buf[off + length - 1] == ' ':
         length -= 1;
-    
+
     strlen = off + length
-    
+
     #True si el último carácter (sin tener en cuenta las negaciones)
     #se correspondía a una variable
     lastWasVar = False
-    
+
     for i in range(off, strlen):
         #Carácter actual
         c = buf[i]
@@ -330,6 +330,9 @@ def parse_expr(buf, off = 0, length = -1):
         if foundOp == Operators.NONE:
             olen = length
         else:
+            if (opIndex != strlen - 1):
+                #Un operador NOT debe de ser el último carácter en la expresión
+                raise ParseError("Unexpected symbol after NOT operator at offset %d" % (opIndex + 1))
             olen = opIndex - off
         out.operands.append(__build_operand(buf, off, olen))
     else:
