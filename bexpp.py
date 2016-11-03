@@ -194,6 +194,21 @@ class Operation(object):
         if self.operator.operc > 1:
             s += self.__str_operand(self.operands[1])
         return s;
+
+    #Operaciones con... operaciones xd
+    def negate(self):
+        if self.operator == Operators.NOT:
+            return self.operands[0]
+        return Operation(Operators.NOT, [self])
+
+    def join(self, other):
+        return Operation(Operators.OR, [self, other])
+
+    def intersect(self, other):
+        return Operation(Operators.AND, [self, other])
+
+    def __repr__(self):
+        return self.common_notation()
             
 def is_valid_var_name(ch):
     if len(ch) != 1:
