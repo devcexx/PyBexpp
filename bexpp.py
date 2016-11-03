@@ -150,12 +150,27 @@ class Operation(object):
             s += " )"
         return s
         
+    def __require_parenthesis(self, operand):
+        return operand.operator > self.operator
+
+    def __can_omit_and_operator(self, operand, alignment):
+        if isinstance(operand, Operation):
+            if self.__require_parenthesis(operand):
+                return False;
+            else:
+                if alignment == 'left':
+                    return self.__can_omit_and_operator(operand.operands[0], alignment)
+                else:
+                    return self.__can_omit_and_operator(operand.operands[len(operand.operands) - 1], alignment)
+        else:
+            return True
+
     def __str_operand(self, operand):
         s = ""
         if isinstance(operand, basestring):
             s += operand
         else:
-            bracketsRequired = operand.operator > self.operator
+            bracketsRequired = self.__require_parenthesis(operand)
             if bracketsRequired:
                 s += "("
             s += operand.common_notation()
@@ -170,7 +185,9 @@ class Operation(object):
             s += '\''
         elif self.operator == Operators.XOR:
             s += '^'
-        elif self.operator == Operators.AND:
+        elif self.operator == Operators.AND and \
+             (not self.__can_omit_and_operator(self.operands[0], 'right') \
+              or not self.__can_omit_and_operator(self.operands[1], 'left')):
             s += '*'
         elif self.operator == Operators.OR:
             s += '+'
